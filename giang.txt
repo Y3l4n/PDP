@@ -1,0 +1,34 @@
+
+
+
+
+initial: heat grid size n x n
+
+25 25 25 25 25
+25 80 80 80 25
+25 80 80 80 25
+25 80 80 80 25
+25 25 25 25 25
+
+25 25 25 25 25 25 80 80 80 25 25 80 80 80 25 ..... 
+
+T[i][j] (2D) = T[i*n+j] (1D)
+T[i-1][j] (2D) = T[(i-1)*n+j]
+T[i+1][j] (2D) = T[(i+1)*n+j]
+
+T[i][j-1] = T(i*n+j-1)
+T[i][j+1] = T(i*n+j+1)
+
+T[1][1] (2D) = T[1*5+1] = T[6] (1D)
+
+after x iteration, what is the temperature of all grid points
+
+after 1 iteration, cập nhật các điểm theo công thức (i: hàng, j: cột)
+giá trị 1 điểm = trung bình 4 điểm hàng xóm trên dưới trái phải
+
+T[i, j] = (T[i-1, j] + T[i+1, j] + T[i, j-1] + T[i, j+1]) / 4
+
+Với các điểm ở biên, có giá trị mặc định cho trên dưới trái phải
+
+số iteration chạy: tự chỉnh
+matrix size: cũng tự chỉnh
