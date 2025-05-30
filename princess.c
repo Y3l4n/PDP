@@ -44,6 +44,8 @@ int main(int argc, char *argv[]){
         Initialize(C);
     }
     
+	// Ma trận to: M x N, ma trận con (chia cho các processor): m x N
+	// m = M / số processor
     // Distribute sub-matrices from root processor to all processors
     // params: 
     // MPI_Scatter(
@@ -150,14 +152,26 @@ int main(int argc, char *argv[]){
         // for fresh local maximum change
         delta = 0; 
 
+		// Hàng đầu tiên của process dưới là biên dưới của process trên
+		// Hàng cuối cùng của process trên là biên trên của process dưới
+
         //Communication 
 		if (rank == 0){
+
+			// Process trên cùng
+			// Gửi hàng cuối cùng thânh biên trên của process 1
+			// Nhận hàng đầu tiên của process 1 thành biên dưới của nó
+
 			//Send down to next processor
 			MPI_Send(C_local + (m-1)*N, N, MPI_FLOAT, rank + 1, 1, MPI_COMM_WORLD);
 			
 			//Receive Down from next processor
 			MPI_Recv(Down, N, MPI_FLOAT, rank + 1, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);	
 		} else if (rank == size - 1) {
+
+			// Process dưới cùng
+			// Gửi hàng đầu tiên thành biên dưới của process dưới cùng - 1
+			// Nhận hàng cuối cùng của process dưới cùng - 1 thành biên trên của nó
 			//Send Up to previous processor
 			MPI_Send(C_local, N, MPI_FLOAT, rank - 1, 2, MPI_COMM_WORLD);
 			
